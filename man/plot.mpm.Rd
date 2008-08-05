@@ -10,12 +10,12 @@
            show.row = c("all", "position"),
            show.col = c("all", "position"),
            col.group = rep(1, length(x$col.names)),
-           title = "",
            colors = c("orange1", "red",
              rainbow(length(unique(col.group)), start = 2/6, end = 4/6)),
            col.areas = TRUE ,
            col.symbols = c(1, rep(2, length(unique(col.group)))),
            rot = rep(-1, length(dim)), 
+           labels = NULL,
            label.tol = 1, 
            lab.size = 0.725,
            col.size = 10, row.size = 10,
@@ -25,7 +25,7 @@
 }
 \arguments{
   \item{x}{object of class \code{mpm} a result of a call to \code{mpm}.}
-  \item{title}{character string with title to be put on the plot.}
+  % \item{title}{character string with title to be put on the plot.}
   \item{scale}{optional character string specifying the type of factor
     scaling of the biplot. This can be either \code{\dQuote{singul}}
     (singular value scaling), \code{\dQuote{eigen}} (eigenvalue scaling),
@@ -46,8 +46,11 @@
     positioned columns \code{\dQuote{position}}.}
   \item{col.group}{optional vector (character or numeric) indicating the
     different groupings of the columns, e.g. \code{Golub.grp}. Defaults to 1.}
-  \item{colors}{colors to be applied to the unlabeled rows (displayed as
-    dots), labeled rows, and different groups of columns.}
+  \item{colors}{vector specifying the colors for the annotation of the plot;
+    the first two elements concern the rows; the third till the last element
+    concern the columns; the first element will be used to color the unlabeled
+    rows; the second element for the labeled rows and the remaining elements to
+    give different colors to different groups of columns.}
   \item{col.areas}{logical value indicating whether columns should be
     plotted as squares with areas proportional to their marginal mean
     and colors representing the different groups (\code{TRUE}), or with
@@ -56,6 +59,8 @@
   \item{col.symbols}{vector of symbols when \code{col.areas=FALSE}
     corresponds to the \code{pch} argument of the function \code{plot}.}
   \item{rot}{rotation of plot. Defaults to \code{c(-1,-1)}.}
+  \item{labels}{character vector to be used for labeling points on the graph;
+    if \code{NULL}, the row names of \code{x} are used instead}
   \item{label.tol}{numerical value specifying either the percentile
     (\code{label.tol<=1})of rows or the number of rows
     (\code{label.tol>1}) most distant from the plot-center (0,0) that
@@ -63,13 +68,13 @@
     marginal means of the original data.}
   \item{lab.size}{size of identifying labels for row- and column-items
     as \code{cex} parameter of the \code{text} function}
-  \item{col.size}{size in mm of the column symbols}
-  \item{row.size}{size in mm of the row symbols}
+  \item{col.size}{size in mm of the column symbols} % ??
+  \item{row.size}{size in mm of the row symbols} % ??
   \item{do.smoothScatter}{use smoothScatter or not instead of plotting
                           individual points}
   \item{do.plot}{produce a plot or not}
-  \item{...}{dots argument currently added for being in line with generic
-    function definition only} 
+  \item{...}{further arguments to \code{eqscaleplot} which draws the canvas
+    for the plot; useful for adding a \code{main} or a custom \code{sub}} 
 }
 \details{
   Spectral maps are special types of biplots with the area of the symbols

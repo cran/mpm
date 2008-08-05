@@ -1,9 +1,9 @@
 Package: mpm
-Version: 1.0-7
-Date: 2008-05-09
-Title: Spectral Map Analysis
-Maintainer: Luc Wouters <lwouters@luc.ac.be>
-Author: Luc Wouters <lwouters@luc.ac.be>
+Version: 1.0-11
+Date: 2008-08-05
+Title: Multivariate Projection Methods
+Maintainer: Luc Wouters <wouters_luc@telenet.be>
+Author: Luc Wouters <wouters_luc@telenet.be>
 Depends: R (>= 1.5), MASS, geneplotter
 Description: Exploratory graphical analysis of multivariate data,
         specifically gene expression data with different projection
@@ -11,4 +11,4 @@ Description: Exploratory graphical analysis of multivariate data,
         analysis, spectral map analysis.
 License: GPL (>=2)
 URL: http://mpm.r-forge.r-project.org
-Packaged: Thu May 15 12:13:33 2008; tobias
+Packaged: Tue Aug 26 05:01:25 2008; theussl

@@ -1,9 +1,9 @@
 ###
-### Spectral Map Analysis spm
+### Multivariate Projection Methods, mpm
 ###
-### Copyright 2003 Luc Wouters <luc.wouters@luc.ac.be>
+### Copyright 2003-2008 Luc Wouters <wouters_luc@telenet.be>
 ###
-### This file is part of the spm library for R and related languages.
+### This file is part of the mpm package for R and related languages.
 ### It is made available under the terms of the GNU General Public
 ### License, version 2, or at your option, any later version,
 ### incorporated herein by reference.
@@ -20,18 +20,32 @@
 ### MA 02111-1307, USA
 
 ### Web service enabled by Rudi Verbeeck <rverbeec@prdbe.jnj.com>
-### Included smoothScatter function from BioConductor package.
+### Included smoothScatter functionality from geneplotter package (BioConductor).
 
-mpm <- function(data, # input data; column 1 contains row names
-	logtrans = TRUE,    # logtransform input data or not (`reexpression')
-  logrepl = 1e-9,     # replace input data <= 0 with this value before taking the log
+#' multivariate projection methods
+#' @author Luc Wouters, Rudi Verbeeck, Tobias Verbeke
+#' @param data input data; column 1 contains row names
+#' @param logtransf logtransform input data or not (`reexpression')
+#' @param logrepl replace input data <= 0 with this value before taking the log
+#' @param center
+#' @param normal
+#' @param closure
+#' @param row.weight
+#' @param col.weight
+#' @param CW Column weight vector (default all 1)
+#' @param RW Row weight vector (default all 1)
+#' @param pos.row
+#' @param pos.col
+mpm <- function(data, 
+	logtrans = TRUE,    
+  logrepl = 1e-9,     
 	center = c("double", "row", "column", "global", "none"),
 	normal = c("global", "row", "column", "none"),
 	closure = c("none", "row", "column", "global", "double"),
 	row.weight = c("constant", "mean", "median", "max", "logmean", "RW"),
 	col.weight = c("constant", "mean", "median", "max", "logmean", "CW"),
-	CW = rep(1, ncol(data)-1),  # Column weight vector (default all 1) 
-	RW = rep(1, nrow(data)),    # Row weight vector (default all 1) 
+	CW = rep(1, ncol(data)-1),  
+	RW = rep(1, nrow(data)),     
 	pos.row = rep(FALSE, nrow(data)),            # Positioned rows and columns are not taken into account during calculation,
 	pos.column = rep(FALSE, ncol(data) - 1)){    # but are still plotted at the correct location
   
@@ -97,7 +111,8 @@ mpm <- function(data, # input data; column 1 contains row names
   LData <- if (logtrans) logtransf(NData, logrepl, comp = "logarithms") else NData # just copy the data from the previous step
   
   ### means of original data matrix
-  RM <- rowMeans(NData[, !pos.column])
+  RM <- rowMeans(NData[, !pos.column]) ### transformation does not 
+                                       ### have impact on this !!
   CM <- colMeans(NData[!pos.row, ])   
   
   ### define weights

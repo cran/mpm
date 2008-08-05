@@ -6,18 +6,19 @@ plot.mpm <- function(
     show.row = c("all", "position"),
     show.col = c("all", "position"),
     col.group = rep(1, length(x$col.names)),
-    title = "",
     colors = c("orange1", "red", rainbow(length(unique(col.group)), start=2/6, end=4/6)),
     col.areas = TRUE,
     col.symbols = c(1, rep(2, length(unique(col.group)))),
     rot = rep(-1, length(dim)), # Mirror all axes
+    labels = NULL, # character vector of labels (to allow labels to differ from row.names)
     label.tol = 1,
     lab.size = 0.725,
     col.size = 10,
     row.size = 10,
     do.smoothScatter = FALSE, # Plot individual points or density maps
-    do.plot = TRUE,
-    ...) # This routine can also be used to calculate the coordinates, without plotting
+    do.plot = TRUE, # This routine can also be used to calculate the 
+                    # coordinates, without plotting
+    ...) 
 {
 
   ### error checking and argument matching  
@@ -40,6 +41,7 @@ plot.mpm <- function(
     warning("Density map plotting requested but plotting not selected. Continuing with plot.\n")
     do.plot <- TRUE # If smoothScatter is set, then also do a plot
   }
+  
   scale <- match.arg(scale)
   show.row <- match.arg(show.row)
   show.col <- match.arg(show.col)
@@ -132,7 +134,7 @@ plot.mpm <- function(
         c(-1, 1),
         yrange + diff(yrange) * c(-0.1, 0.1))
                                         # RV: changed diff(xrange) to diff(yrange):
-    # the eqscplot funtion (ratio=1) takes care of equally scalled axes, so make sure
+    # the eqscplot funtion (ratio=1) takes care of equally scaled axes, so make sure
     # we have the correct range for each axis here.
     
     #
@@ -149,11 +151,27 @@ plot.mpm <- function(
     opar <- par(pty = "m") # preserve configuration
     # Create a window with the maximal plotting region
     # Equal scale plot function from MASS library
-    eqscplot(xrange, yrange, ratio = 1,
-        tol=0, type = "n", axes = FALSE, cex.lab = 0.85,
-        xlab = paste("PC", dim[1], " ", 100 * round(x$contrib[dim[1]], 2), "%", sep = ""),
-        ylab = paste("PC", dim[2], " ", 100 * round(x$contrib[dim[2]], 2), "%", sep = ""))
+    dotList <- list(...)
+    if (is.null(dotList$sub)){ 
+      sub <- paste("Closure = ", x$closure, ", Center = ", x$center, ", Norm. = ", 
+          x$normal, ", Scale = ", scale, ", RW = ", x$row.weight, ", CW = ", x$col.weight, sep="")
+      if (is.null(dotList$cex.sub))
+        cex.sub <- 0.85 
+    }
+    cex.sub <- if (is.null(dotList$cex.sub)) 0.85 else dotList$cex.sub 
+    if (is.null(dotList$xlab))
+      xlab <- paste("PC", dim[1], " ", 100 * round(x$contrib[dim[1]], 2), "%", sep = "")
+    if (is.null(dotList$ylab))
+      ylab <- paste("PC", dim[2], " ", 100 * round(x$contrib[dim[2]], 2), "%", sep = "")
     
+    eqscplot(xrange, yrange, ratio = 1,
+             tol=0, type = "n", axes = FALSE, cex.lab = 0.85,
+             xlab = xlab,
+             ylab = ylab,
+             sub = sub,
+             cex.sub = cex.sub,
+             ...) # for main etc.
+   
     #
     # Scales
     # (RV: the drop parameter doesn't have an effect in the following lines)
@@ -183,11 +201,15 @@ plot.mpm <- function(
     ### plot distant rows as circles with areas proportional to x$Rm
     sqs <- 0.5 * sx * pmax(0.02, row.size * sqrt((x$Rm) / (max(x$Rm))))
     yoffset <- sy * (2 + sqs / sx)
+    
+    
     if (sum(isel) > 0){ # if there is at least 1 point to plot
       symbols(ss[isel, 1], ss[isel, 2], circle = sqs[isel], 
         inches = FALSE, lwd = 3, add = TRUE, fg = colors[2])
+      if (is.null(labels)) labels <- x$row.names
       text(ss[isel, 1], ss[isel, 2] - yoffset[isel], adj = c(0.5, 1), 
-        cex = lab.size, labels = x$row.names[isel], col = colors[2])
+        cex = lab.size, labels = labels[isel], # x$row.names[isel]
+        col = colors[2])
     }
     
     ### plot columns with indication of column-grouping
@@ -219,10 +241,7 @@ plot.mpm <- function(
     lines(c(-2.5,2.5) * sx, c(0,0), lwd=3)
     lines(c(0,0), c(-2.5,2.5) * sy, lwd=3)
     box()
-    title(main = title, sub = list(paste("Closure = ", x$closure, ", Center = ", x$center,
-                ", Norm. = ", x$normal, ", Scale = ", scale,
-                ", RW = ", x$row.weight, ", CW = ", x$col.weight, sep=""),
-          cex = 0.85, font = 1))
+   
     par(opar) # Restore plotting configuration
   }
   
