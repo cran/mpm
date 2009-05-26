@@ -1,6 +1,6 @@
 Package: mpm
-Version: 1.0-13
-Date: 2009-04-08
+Version: 1.0-15
+Date: 2009-05-26
 Title: Multivariate Projection Methods
 Maintainer: Tobias Verbeke <tobias.verbeke@openanalytics.be>
 Author: Luc Wouters <wouters_luc@telenet.be>
@@ -11,6 +11,6 @@ Description: Exploratory graphical analysis of multivariate data,
         spectral map analysis.
 License: GPL (>= 2)
 URL: http://mpm.r-forge.r-project.org
-Packaged: Wed Apr 8 13:50:33 2009; tobias
+Packaged: 2009-05-26 13:45:13 UTC; tobias
 Repository: CRAN
-Date/Publication: 2009-04-14 17:32:22
+Date/Publication: 2009-05-27 12:12:33
