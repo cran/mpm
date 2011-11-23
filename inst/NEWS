@@ -1,3 +1,13 @@
+1.0-22
+    o further fix in plot.mpm in the presence of label.tol.col
+1.0-21
+    o fix bug in plot.mpm that occurred when specifying col.group
+1.0-20
+    o trivial fix in .onAttach
+    o small documentation improvements
+1.0-19
+    o fix in plot.mpm to allow depiction of spectral maps with negative numbers
+    o add option to only label a limited number of columns (label.col.tol)
 1.0-18
     o rename dump.summary.mpm to export.summary.mpm and add generic function
 1.0-17
