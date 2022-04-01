@@ -30,4 +30,5 @@ plot(r.sma, label.tol = 20, scale = "uvc",
     sampleNames = FALSE, do.smoothScatter = TRUE)
 
 # summary and export
-export(summary(r.sma))
+summaryTable <- export(summary(r.sma))
+head(summaryTable)

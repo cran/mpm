@@ -4,8 +4,8 @@
 #' @param ... further arguments for the print method (for printing the contributions)
 #' @seealso \code{\link{print.default}}
 #' @return x is returned invisibly
-#' @S3method print mpm
 #' @method print mpm
+#' @export print.mpm
 #' @export
 print.mpm <- function(x, digits = 3, ...){
   cat("Call:\n")

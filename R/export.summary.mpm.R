@@ -24,7 +24,8 @@ export <- function(x, filename, ...){
 #' @author Rudi Verbeeck, Tobias Verbeke
 #' @seealso \code{\link{summary.mpm}}
 #' @method export summary.mpm
-#' @S3method export summary.mpm
+#' @importFrom utils write.table
+#' @export export.summary.mpm
 #' @export
 #' @keywords manip
 export.summary.mpm <- function(
@@ -60,8 +61,8 @@ export.summary.mpm <- function(
   {
     # Add columns in 2D: Radius, Angle, Type
     # Type can be R (row in the input matrix) or C (column in the input matrix)
-    Rpolar <- complex(real = x$Rows[,FdimsR[1]], imag = x$Rows[,FdimsR[2]])
-    Cpolar <- complex(real = x$Columns[,FdimsC[1]], imag = x$Columns[,FdimsC[2]])
+    Rpolar <- complex(real = x$Rows[,FdimsR[1]], imaginary = x$Rows[,FdimsR[2]])
+    Cpolar <- complex(real = x$Columns[,FdimsC[1]], imaginary = x$Columns[,FdimsC[2]])
     
     r <- rbind(
         cbind(x$Rows,

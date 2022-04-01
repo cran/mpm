@@ -1,3 +1,8 @@
+1.0-23
+    o use roxygen for doc
+    o move MASS/KernSmooth from Depends to Imports
+    o add imports from base R packages
+    o change maintainer
 1.0-22
     o further fix in plot.mpm in the presence of label.tol.col
 1.0-21

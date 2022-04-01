@@ -88,7 +88,11 @@
 #'   \emph{Biometrics} \bold{59}, 1131-1140.
 #' @keywords multivariate hplot
 #' @method plot mpm
-#' @S3method plot mpm
+#' @import KernSmooth
+#' @importFrom MASS eqscplot
+#' @importFrom grDevices colorRampPalette rainbow
+#' @importFrom graphics box lines par points smoothScatter symbols text
+#' @importFrom stats quantile
 #' @examples
 #' 
 #'   # Weighted spectral map analysis
@@ -100,6 +104,7 @@
 #'             col.group = (Golub.grp)[1:38], zoom = c(1,1.2), col.size = 5)
 #'   Golub[r$Rows$Select, 1] # 20 most extreme genes
 #' 
+#' @export plot.mpm
 #' @export
 plot.mpm <- function(
     x, # mpm object
@@ -132,8 +137,6 @@ plot.mpm <- function(
     stop ("Argument 'x' is missing, with no default.")
   if (!inherits(x, "mpm")) 
     stop("Use only with 'mpm' objects.")
-  if (!require("MASS"))
-    stop("MASS package could not be loaded.") 
   if (do.smoothScatter && label.tol == 1){
     # if we require all points in the plot to be labelled, no points are left for the density map
     warning("All points selected for labelling, continuing without density map.\n")
@@ -311,9 +314,11 @@ plot.mpm <- function(
     #
     # Select rows to be plotted
     i <- is & (DS < thres)
-    if (!do.smoothScatter) # plot inner points as unlabelled dots
+    if (!do.smoothScatter){ # plot inner points as unlabelled dots
       points(ss[i,1], ss[i,2], col = colors[1], cex = 0.825, lwd = 2)
-    else # plot as density maps
+  	}else{ # plot as density maps
+		if(!requireNamespace("KernSmooth", quietly = TRUE))
+			stop(paste("The package 'KernSmooth' is not available to create a smooth scatter."))
       smoothScatter(x = ss[i,1], y = ss[i,2], nbin = 256, nrpoints = 0,
           add = TRUE, colramp = colorRampPalette(c("white", "burlywood"))) # add image to current eqscplot axes, instead of overwritting
     # Alternative to adding to the axes set up by eqscplot, use the following
@@ -323,7 +328,7 @@ plot.mpm <- function(
     # xaxt = "n", yaxt = "n", # do not plot the axes scales
     # xlab = paste("PC", dim[1], " ", 100 * round(x$contrib[dim[1]], 2), "%", sep = ""),
     # ylab = paste("PC", dim[2], " ", 100 * round(x$contrib[dim[2]], 2), "%", sep = ""),
-    
+	}
 
     ### plot distant rows as circles with areas proportional to x$Rm
     sqs <- 0.5 * sx * pmax(0.02, row.size * sqrt(abs((x$Rm)/(max(abs(x$Rm))))))
@@ -331,7 +336,7 @@ plot.mpm <- function(
     
     
     if (sum(isel) > 0){ # if there is at least 1 point to plot
-      symbols(ss[isel, 1], ss[isel, 2], circle = sqs[isel], 
+      symbols(ss[isel, 1], ss[isel, 2], circles = sqs[isel], 
         inches = FALSE, lwd = 3, add = TRUE, fg = colors[2])
       if (is.null(labels)) labels <- x$row.names
       text(ss[isel, 1], ss[isel, 2] - yoffset[isel], adj = c(0.5, 1), 
@@ -358,7 +363,7 @@ plot.mpm <- function(
           
           
           symbols(ll[ii, 1], ll[ii, 2],
-              square = sqs, inches = FALSE, lwd = 3, add = TRUE, fg = colors[2+iGroup[i]])
+              squares = sqs, inches = FALSE, lwd = 3, add = TRUE, fg = colors[2+iGroup[i]])
           if (sum(iiExtremes) > 0){
             
             sqsExtremes <- 0.5 * sx * pmax(0.02, col.size * sqrt(abs((x$Cm[iiExtremes])/(max(abs(x$Cm))))))

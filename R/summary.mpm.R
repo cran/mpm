@@ -50,8 +50,8 @@
 #'   r.sum <- summary(r.fam)
 #'   print(r.sum, what = "all")
 #' 
-#' @S3method summary mpm
 #' @method summary mpm
+#' @export summary.mpm
 #' @export
 summary.mpm <- function(object, maxdim = 4, ...){
   # scale <- match.arg(scale) ## TV

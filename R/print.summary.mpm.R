@@ -6,8 +6,8 @@
 #' @param ... further arguments for the print method
 #' @return x is returned invisibly
 #' @seealso  \code{\link{print.default}}
-#' @S3method print summary.mpm
 #' @method print summary.mpm
+#' @export print.summary.mpm
 #' @export
 print.summary.mpm <- function(x, digits = 2, 
     what = c("columns", "rows", "all"), ...){

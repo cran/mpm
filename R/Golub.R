@@ -1,4 +1,5 @@
 #' Golub (1999) Data
+#' 
 #' Golub et al. (1999) data on gene expression profiles of 38 patients
 #' suffering from acute leukemia and a validation sample of 34 patients.
 #' 

@@ -1,4 +1,5 @@
 #' Spectral Map Analysis
+#' 
 #' Produces an object of class \code{mpm} that allows for exploratory
 #' multivariate analysis of large data matrices, such as gene expression data
 #' from microarray experiments.
@@ -115,7 +116,7 @@
 #'              col.weight = "mean", closure = "double")
 #'   # Weighted spectral map analysis
 #'   r.sma <- mpm(Golub[,1:39], row.weight = "mean", col.weight = "mean")
-#'
+#' @importFrom stats median
 #' @export
 mpm <- function(data, 
 	logtrans = TRUE,    
